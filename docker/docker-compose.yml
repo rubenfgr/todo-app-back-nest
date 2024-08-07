@@ -1,0 +1,29 @@
+# Use postgres/example user/password credentials
+version: '3.9'
+
+services:
+  postgres:
+    container_name: ${COMPOSE_PROJECT_NAME}_postgres
+    image: postgres:16.0
+    restart: no
+    environment:
+        - POSTGRES_DB=${POSTGRES_DB}
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+        - todo-app-postgres:/var/lib/postgresql
+    ports:
+        - "${POSTGRES_PORT}:5432"
+    tty: true
+
+  maildev:
+    container_name: ${COMPOSE_PROJECT_NAME}_maildev
+    image: maildev/maildev
+    restart: no
+    ports:
+      - "${MAILDEV_PORT}:1080"
+      - "${MAILDEV_SMTP_PORT}:1025"
+    tty: true
+
+volumes:
+  todo-app-postgres:
