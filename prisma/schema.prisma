@@ -14,8 +14,101 @@ datasource db {
 }
 
 model User {
-  id    String @default(uuid()) @id
-  email String  @unique
-  name  String  @unique
+  id       String  @id @default(uuid())
+  email    String  @unique
+  name     String  @unique
   password String
+  
+  medias    Media[]
+  tasks TaskList[]
+  collaboratorTasks Collaborator[]
+}
+
+model TaskList {
+  id     String  @id @default(uuid())
+  title  String
+  order  Int
+  userId String
+  mediaImageId String?
+
+  user   User    @relation(fields: [userId], references: [id])
+  mediaImage Media? @relation(fields: [mediaImageId], references: [id])
+
+  tasks  Task[]
+  collaborators Collaborator[]
+}
+
+model Task {
+  id        String    @id @default(uuid())
+  title     String
+  description String  @db.Text
+  dueDate   DateTime
+  status    TaskStatus
+  order     Int
+  listId    String
+
+  list      TaskList  @relation(fields: [listId], references: [id])
+  tags TaskTag[]
+  subTags SubTask[]
+}
+
+model SubTask {
+  id        String @id @default(uuid())
+  title     String
+  status    TaskStatus
+  order     Int
+  taskId    String
+
+  task      Task   @relation(fields: [taskId], references: [id])
+}
+
+model Tag {
+  id    String @id @default(uuid())
+  name  String
+
+  tasks TaskTag[]
+}
+
+model TaskTag {
+  taskId String
+  tagId String
+  
+  task Task @relation(fields: [taskId], references: [id])
+  tag Tag @relation(fields: [tagId], references: [id])
+
+  @@id([taskId, tagId])
+}
+
+model Collaborator {
+  userId String
+  listId String
+
+  user User @relation(fields: [userId], references: [id])
+  list TaskList @relation(fields: [listId], references: [id])
+
+  @@id([userId, listId])
+}
+
+model Media {
+  id     String    @id @default(uuid())
+  path   String
+  title  String
+  alt    String
+  type   MediaType
+  userId String
+  
+  user   User      @relation(fields: [userId], references: [id])
+  taskLists TaskList[]
+}
+
+enum MediaType {
+  IMAGE
+  VIDEO
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
 }

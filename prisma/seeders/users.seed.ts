@@ -11,5 +11,18 @@ export const usersSeeder = async (prisma: PrismaClient) => {
       password: hashSync('admin', 10),
     },
   });
+
   console.log('Admin user created:', admin);
+  
+  const collaborator = await prisma.user.upsert({
+    where: { email: 'collaborator@todoapp.es' },
+    update: {},
+    create: {
+      email: 'collaborator@todoapp.es',
+      name: 'collaborator',
+      password: hashSync('collaborator', 10),
+    },
+  });
+
+  console.log('Collaborator user created:', collaborator);
 };
