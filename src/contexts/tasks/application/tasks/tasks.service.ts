@@ -8,12 +8,8 @@ export class TasksService {
     return 'This action adds a new task';
   }
 
-  findAll() {
-    return `This action returns all tasks`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
+  findAllByTaskListId(id: string) {
+    return `This action returns all tasks by task list id: ${id}`;
   }
 
   update(id: number, updateTaskDto: UpdateTaskDto) {
