@@ -6,9 +6,10 @@ import { AuthModule } from './contexts/auth/infraestructure/auth.module';
 import { TasksModule } from './contexts/tasks/infraestructure/tasks/tasks.module';
 import { TaskListsModule } from './contexts/tasks/infraestructure/task-lists/task-lists.module';
 import { SubTasksModule } from './contexts/tasks/infraestructure/sub-tasks/sub-tasks.module';
+import { MediaModule } from './contexts/media/media.module';
 
 @Module({
-  imports: [UsersModule, AuthModule, TasksModule, TaskListsModule, SubTasksModule],
+  imports: [UsersModule, AuthModule, TasksModule, TaskListsModule, SubTasksModule, MediaModule],
   controllers: [AppController],
   providers: [AppService],
 })
